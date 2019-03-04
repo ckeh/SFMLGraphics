@@ -6,13 +6,13 @@ COMP=comp/
 
 all: game
 
-ball.o: 
-	g++ -c $(SRC)ball.cpp -o $(COMP)ball.o
+line.o: 
+	g++ -c $(SRC)line.cpp -o $(COMP)line.o
 
 main.o: 
 	g++ -c $(SRC)main.cpp -o $(COMP)main.o
 
-game: main.o ball.o
+game: line.o main.o
 	@echo "** Building the game"
 	g++ -o game $(COMP)* $(LINK)
 
