@@ -7,7 +7,7 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(WINDOW_X,WINDOW_Y), "MyGame!");
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(144);
 	window.requestFocus();
 	allPlatforms ap;
 	Player p;
@@ -51,8 +51,7 @@ int main()
 			m.down = 1;
 			m.up = 0;
 			m.yVel = 2;
-		} else 
-		if(ap.collisionCheck(&p)){
+		} else if(ap.collisionCheck(&p)){
 			//m.down = 0;
 			//m.up = 1;
 			

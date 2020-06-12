@@ -10,4 +10,5 @@ main.o:
 clean:
 	@echo "** Removing object files and executable..."
 	rm -f game
+	rm -f main.o
 
