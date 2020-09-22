@@ -21,6 +21,7 @@ typedef struct motion{
 	bool down = 1;
 	bool left = 0;
 	bool right = 0;
+  bool inhole = 0;
 } Motion;
 
 
@@ -35,7 +36,19 @@ class Spikes{
 			spike->setRotation(45.0);
 		}
 		void drawSpike(sf::RenderWindow* window){
-			window->draw(*spike);
+			for(int i = 0; i<WINDOW_Y; i+=50){
+        for(int j = 0; j<WINDOW_X; j+=50){
+          spike->setPosition(j+21.21,0.0-21.21);
+          window->draw(*spike);
+          spike->setPosition(j,WINDOW_Y-21.21);
+          window->draw(*spike);
+        }
+        spike->setPosition(0.0,i);
+        window->draw(*spike);
+        spike->setPosition(WINDOW_X,i);
+        window->draw(*spike);
+        
+      }
 		}
 };
 class Player{
@@ -44,12 +57,14 @@ class Player{
 		sf::RectangleShape* player;
 		void setMotion(Motion motion){
 			pMove = motion;
-			if(pMove.left){
-				player->move(-pMove.xVel,0.f);
-			}
-			if(pMove.right){
-				player->move(pMove.xVel,0.f);
-			}
+      if(!pMove.inhole){
+        if(pMove.left){
+          player->move(-pMove.xVel,0.f);
+        }
+        if(pMove.right){
+          player->move(pMove.xVel,0.f);
+        }
+      }
 			if(pMove.down){
 				player->move(0.f,pMove.yVel);
 			}
