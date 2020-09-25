@@ -4,11 +4,11 @@
 class Ball{
 	private:
 		Motion bmotion;	
-    	sf::CircleShape* ball;
+    sf::CircleShape* ball;
 	public:
 		Ball(){
 			ball = new sf::CircleShape(10.f);
-    		ball->setFillColor(sf::Color::Green);
+      ball->setFillColor(sf::Color::Green);
 			bmotion.vel = 1;
 			bmotion.up = 0;
 			bmotion.down = 0;
