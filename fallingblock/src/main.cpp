@@ -13,9 +13,22 @@ int main()
 	Player p;
 	Motion m;
 	Spikes s;
-	while (window.isOpen()){
+  sf::Font font;
+  if (!font.loadFromFile("/System/Library/Fonts/Menlo.ttc")) return -1;
+  int count =0;
+  std::string score;
+  score = "Score:" + std::to_string(count);
+  sf::Text text(score,font);
+  text.setCharacterSize(50); // in pixels, not points!
+  //text.setOutlineColor(sf::Color::Green);
+  //text.setOutlineThickness(5.0);
+  text.setFillColor(sf::Color::Green);
+  while (window.isOpen()){
     sf::Event event;
     while (window.pollEvent(event)){
+      if (event.type == sf::Event::Closed){
+        window.close();
+      }
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
@@ -40,14 +53,14 @@ int main()
 					m.right = 0;
 				}
 			}
-      if (event.type == sf::Event::Closed){
-        window.close();
-      }
     }
 		Motion pMove = p.getMotion();
 		if(ap.inHole(&p)){
-			//m.left = 0;
-			//m.right = 0;
+      if(m.inhole == 0){
+        count++;
+        score = "Score:" + std::to_string(count);
+        text.setString(score);
+      }
       m.inhole = 1;
 			m.down = 1;
 			m.up = 0;
@@ -59,14 +72,13 @@ int main()
 			m.up = 0;
 			m.yVel = 2;
       m.inhole = 0;
-
 		}
     window.clear();
 		s.drawSpike(&window);
 		ap.updateAllPlat(&window);
 		p.updatePlayer(&window, m);
-		//ball.update(&window, );
+    window.draw(text);
     window.display();
-    }
+  }
 }
 
