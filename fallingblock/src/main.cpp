@@ -3,6 +3,8 @@
 #include "line.cpp"
 
 #define MENU 0
+#define GAME 1
+#define GAMEOVER 2
 
 int main()
 {
@@ -13,15 +15,13 @@ int main()
 	Player p;
 	Motion m;
 	Spikes s;
+  std::string score;
   sf::Font font;
   if (!font.loadFromFile("/System/Library/Fonts/Menlo.ttc")) return -1;
   int count =0;
-  std::string score;
   score = "Score:" + std::to_string(count);
   sf::Text text(score,font);
   text.setCharacterSize(50); // in pixels, not points!
-  //text.setOutlineColor(sf::Color::Green);
-  //text.setOutlineThickness(5.0);
   text.setFillColor(sf::Color::Green);
   while (window.isOpen()){
     sf::Event event;
@@ -56,11 +56,6 @@ int main()
     }
 		Motion pMove = p.getMotion();
 		if(ap.inHole(&p)){
-      if(m.inhole == 0){
-        count++;
-        score = "Score:" + std::to_string(count);
-        text.setString(score);
-      }
       m.inhole = 1;
 			m.down = 1;
 			m.up = 0;
@@ -68,6 +63,11 @@ int main()
 		} else if(ap.collisionCheck(&p)){
 			m.yVel = ap.getAllSpeed();	
 		} else {
+      if(m.inhole == 1){
+        count++;
+        score = "Score:" + std::to_string(count);
+        text.setString(score);
+      }
 			m.down = 1;
 			m.up = 0;
 			m.yVel = 2;

@@ -24,33 +24,6 @@ typedef struct motion{
   bool inhole = 0;
 } Motion;
 
-
-class Spikes{
-	private:
-		sf::RectangleShape* spike;
-	public:
-		Spikes(){
-			spike = new sf::RectangleShape(sf::Vector2f(30.0,30.0));
-			spike->setFillColor(sf::Color::Red);
-			spike->setPosition(0.0,0.0);
-			spike->setRotation(45.0);
-		}
-		void drawSpike(sf::RenderWindow* window){
-			for(int i = 0; i<WINDOW_Y; i+=50){
-        for(int j = 0; j<WINDOW_X; j+=50){
-          spike->setPosition(j+21.21,0.0-21.21);
-          window->draw(*spike);
-          spike->setPosition(j,WINDOW_Y-21.21);
-          window->draw(*spike);
-        }
-        spike->setPosition(0.0,i);
-        window->draw(*spike);
-        spike->setPosition(WINDOW_X,i);
-        window->draw(*spike);
-        
-      }
-		}
-};
 class Player{
 	private:
 		Motion pMove;
@@ -97,15 +70,64 @@ class Player{
 
 };
 
+
+class Spikes{
+	private:
+		sf::RectangleShape* spike;
+	public:
+		Spikes(){
+			spike = new sf::RectangleShape(sf::Vector2f(30.0,30.0));
+			spike->setFillColor(sf::Color::Red);
+			spike->setPosition(0.0,0.0);
+			spike->setRotation(45.0);
+		}
+		void drawSpike(sf::RenderWindow* window){
+			for(int i = 0; i<WINDOW_Y; i+=50){
+        for(int j = 0; j<WINDOW_X; j+=50){
+          spike->setPosition(j+21.21,0.0-21.21);
+          window->draw(*spike);
+          spike->setPosition(j,WINDOW_Y-21.21);
+          window->draw(*spike);
+        }
+        spike->setPosition(0.0,i);
+        window->draw(*spike);
+        spike->setPosition(WINDOW_X,i);
+        window->draw(*spike);
+        
+      }
+		}
+};
+/*
+class AllSpikes{
+	private:
+		Spikes s[NUM_PLAT];
+	public:
+		void updateAllPlat(sf::RenderWindow* window){
+    }
+		bool collisionCheck(Player* ppos){
+			bool ret = 0;
+			sf::FloatRect pbound, platbound;
+			pbound = ppos->getPlayerBounds();
+			for(int i = 0; i<NUM_PLAT; i++){
+				platbound = p[i].getPlatBounds();
+				if(pbound.intersects(platbound)){
+					ppos->setPos(pbound.left,p[i].getPos().y-PLAYER_SIZE-1);
+					ret = 1;
+				}
+			}
+			return ret;
+		}
+};
+*/
 class Platform{
 	private:
-    	float speed;
+    float speed;
 		Hole holed;
 		bool start;
 		sf::RectangleShape* plat;
-    	sf::RectangleShape* hole;
+    sf::RectangleShape* hole;
 		void resetPlat(){
-			holed.x1 = rand()%(WINDOW_X-(int)holed.size);
+			holed.x1 = rand()%(WINDOW_X-(int)holed.size-2*11)+11;
 			holed.x2 = holed.x1+holed.size;
 			plat->setSize(sf::Vector2f(WINDOW_X,PLAT_HEIGHT));
 			hole->setSize(sf::Vector2f(holed.size,PLAT_HEIGHT));
