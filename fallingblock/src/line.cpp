@@ -67,6 +67,9 @@ class Player{
 		sf::FloatRect getPlayerBounds(){
 			return player->getGlobalBounds();
 		}
+		void reset(){
+			player->setPosition(WINDOW_X/2,WINDOW_Y/2);
+		}
 
 };
 
@@ -124,7 +127,7 @@ class Platform{
 		Hole holed;
 		bool start;
 		sf::RectangleShape* plat;
-    sf::RectangleShape* hole;
+		sf::RectangleShape* hole;
 		void resetPlat(){
 			holed.x1 = rand()%(WINDOW_X-(int)holed.size-2*11)+11;
 			holed.x2 = holed.x1+holed.size;

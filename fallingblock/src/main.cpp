@@ -10,7 +10,8 @@ int main(){
 	sf::RenderWindow window(sf::VideoMode(WINDOW_X,WINDOW_Y), "MyGame!");
 	window.setFramerateLimit(144);
 	window.requestFocus();
-	allPlatforms ap;
+	allPlatforms* ap; 
+	ap = new allPlatforms();
 	Player p;
 	Motion m;
 	Spikes s;
@@ -26,7 +27,7 @@ int main(){
 	while (window.isOpen()){
 		switch (GAME_MODE){
 			case MENU:{
-				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
+				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
 					GAME_MODE = GAME;
 				}
 			break;}
@@ -64,13 +65,13 @@ int main(){
 			Motion pMove = p.getMotion();
 			if(p.getPos().x <11 |p.getPos().x+PLAYER_SIZE >WINDOW_X - 11|p.getPos().y<11 | p.getPos().y>WINDOW_Y-11){
 				GAME_MODE = GAMEOVER;
-			} else if(ap.inHole(&p)){
+			} else if(ap->inHole(&p)){
 				m.inhole = 1;
 				m.down = 1;
 				m.up = 0;
 				m.yVel = 2;
-			} else if(ap.collisionCheck(&p)){
-				m.yVel = ap.getAllSpeed();	
+			} else if(ap->collisionCheck(&p)){
+				m.yVel = ap->getAllSpeed();	
 			} else {
 				if(m.inhole == 1){
 					count++;
@@ -83,7 +84,7 @@ int main(){
 				m.inhole = 0;
 			}
 			window.clear();
-			ap.updateAllPlat(&window);
+			ap->updateAllPlat(&window);
 			p.updatePlayer(&window, m);
 			s.drawSpike(&window);
 			window.draw(text);
@@ -91,9 +92,15 @@ int main(){
 			break;
 			}
 			case GAMEOVER:{
+				window.clear();
+				delete ap;
+				ap = new allPlatforms();
+				p.reset();
+				count = 0;
 				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
-					GAME_MODE = GAME;
+					GAME_MODE = MENU;
 				}
+				window.display();
 
 			break;
 			}
