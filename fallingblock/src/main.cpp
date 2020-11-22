@@ -16,23 +16,23 @@ int main(){
 	Motion m;
 	Spikes s;
 	int GAME_MODE = MENU;
-	std::string score;
 	sf::Font font;
 	if (!font.loadFromFile("font.ttf")) return -1;
 	int count =0;
-	score = "Score:" + std::to_string(count);
-	sf::Text text(score,font);
-	text.setCharacterSize(50); // in pixels, not points!
-	text.setFillColor(sf::Color::Green);
+	sf::Text score("Score:" + std::to_string(count),font);
+	score.setCharacterSize(50); // in pixels, not points!
+	score.setFillColor(sf::Color::Green);
+    sf::Event event;
 	while (window.isOpen()){
+        window.clear();
 		switch (GAME_MODE){
 			case MENU:{
 				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+                    sf::Text score("Score:" + std::to_string(count),font);
 					GAME_MODE = GAME;
 				}
 			break;}
 			case GAME:{
-			sf::Event event;
 			while (window.pollEvent(event)){
 				if (event.type == sf::Event::Closed){
 					window.close();
@@ -75,36 +75,36 @@ int main(){
 			} else {
 				if(m.inhole == 1){
 					count++;
-					score = "Score:" + std::to_string(count);
-					text.setString(score);
+					score.setString("Score:" + std::to_string(count));
 				}
 				m.down = 1;
 				m.up = 0;
 				m.yVel = 2;
 				m.inhole = 0;
 			}
-			window.clear();
 			ap->updateAllPlat(&window);
 			p.updatePlayer(&window, m);
 			s.drawSpike(&window);
-			window.draw(text);
-			window.display();
+			window.draw(score);
 			break;
 			}
 			case GAMEOVER:{
-				window.clear();
+                sf::Text gameover("Game Over\nYour Final Score Was "+std::to_string(count)+"\nHit Spacebar to Continue...",font); 
+                gameover.setCharacterSize(50); // in pixels, not points!
+                gameover.setFillColor(sf::Color::Green);
+			    window.draw(gameover);
 				delete ap;
 				ap = new allPlatforms();
 				p.reset();
-				count = 0;
 				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
+                    count = 0;
 					GAME_MODE = MENU;
 				}
-				window.display();
 
 			break;
 			}
 		}
+        window.display();
 	}
 }
 
